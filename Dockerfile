@@ -16,11 +16,12 @@ RUN pip install --no-cache-dir --upgrade pip && \
     pip install uv
 
 # Create app directory and set as working directory
-RUN mkdir -p /app
+RUN useradd -ms /bin/bash app && mkdir -p /app && chown -R app:app /app
+USER app
 WORKDIR /app
 
 # Copy project files
-COPY . /app
+COPY --chown=app:app . /app
 
 # Install Python dependencies
 RUN uv sync
